@@ -1,108 +1,315 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>磁力快搜 · 二次元版</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>磁力快搜 · 简洁现代版（多维搜索）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
-    body {
-      background: linear-gradient(to bottom, #2c2c54, #40407a);
-      color: #f9f9f9;
-      font-family: 'ZCOOL KuaiLe', cursive;
+    /* Reset */
+    * {
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #f4f7fc;
+      color: #1a1a1a;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
     h1 {
       text-align: center;
-      color: #ff9ff3;
-      font-size: 2.2em;
-      margin-bottom: 15px;
-      text-shadow: 2px 2px 4px #000;
+      color: #1e88e5;
+      margin-bottom: 25px;
+      font-weight: 700;
+      font-size: 2.4rem;
+      letter-spacing: 1px;
     }
-    .search-box {
-      text-align: center;
-      margin-bottom: 20px;
+
+    /* 搜索区域 */
+    .search-area {
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+      margin-bottom: 40px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
     }
-    .search-box input {
-      padding: 10px;
-      font-size: 16px;
-      width: 80%;
-      border-radius: 10px;
-      border: none;
+
+    .search-area input[type="text"] {
+      flex: 1 1 320px;
+      padding: 10px 14px;
+      font-size: 1rem;
+      border: 1.5px solid #1e88e5;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .search-area input[type="text"]:focus {
+      border-color: #1565c0;
+      box-shadow: 0 0 8px #1565c0;
+    }
+
+    .search-area select {
+      padding: 10px 14px;
+      font-size: 1rem;
+      border: 1.5px solid #1e88e5;
+      border-radius: 6px;
+      background: white;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    .search-area select:hover,
+    .search-area select:focus {
+      border-color: #1565c0;
+      box-shadow: 0 0 8px #1565c0;
       outline: none;
     }
-    .section {
-      margin-top: 25px;
+
+    .search-area button {
+      padding: 10px 24px;
+      font-size: 1rem;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
     }
-    .section-title {
-      font-size: 1.3em;
-      margin-bottom: 10px;
-      color: #ffdd59;
-      text-shadow: 1px 1px 2px #000;
+    .search-area button:hover {
+      background-color: #1565c0;
     }
+
+    /* 分类区域样式 */
+    section {
+      margin-bottom: 40px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+      padding: 20px 25px;
+      transition: box-shadow 0.3s ease;
+    }
+    section:hover {
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.15);
+    }
+
+    section > h2 {
+      color: #1565c0;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      border-left: 5px solid #1e88e5;
+      padding-left: 12px;
+      font-weight: 600;
+    }
+
     ul {
-      list-style: none;
-      padding: 0;
+      list-style-type: none;
     }
+
     li {
-      margin-bottom: 10px;
+      margin-bottom: 14px;
+      font-size: 1rem;
     }
+
     a {
-      color: #00d2d3;
       text-decoration: none;
-      font-weight: bold;
+      color: #1976d2;
+      font-weight: 600;
+      transition: color 0.2s ease;
     }
     a:hover {
+      color: #004ba0;
       text-decoration: underline;
     }
-    .note {
-      font-size: 0.9em;
-      color: #ccc;
-      margin-top: 30px;
+
+    p.desc {
+      color: #555;
+      font-weight: 400;
+      margin-top: 4px;
+      font-size: 0.9rem;
+      max-width: 700px;
+      line-height: 1.4;
+    }
+
+    footer {
       text-align: center;
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 40px;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      section {
+        padding: 15px 20px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      section > h2 {
+        font-size: 1.4rem;
+      }
+      .search-area {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .search-area input[type="text"],
+      .search-area select,
+      .search-area button {
+        width: 100%;
+        flex: none;
+      }
     }
   </style>
-  <script>
-    function searchKeyword() {
-      const keyword = document.getElementById("searchInput").value.trim();
-      if (!keyword) return;
-      const url = "https://sukebei.nyaa.si/?f=0&c=0_0&q=" + encodeURIComponent(keyword);
-      window.open(url, "_blank");
-    }
-  </script>
 </head>
 <body>
-  <h1>磁力快搜 · 二次元版</h1>
+  <h1>磁力快搜 · 简洁现代版（多维搜索）</h1>
 
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="输入番号 / 关键词，回车即搜 Sukebei Nyaa" onkeydown="if(event.key==='Enter') searchKeyword()">
+  <div class="search-area" role="search">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="请输入番号、女优名或类别关键词"
+      aria-label="搜索关键词"
+    />
+    <select id="searchType" aria-label="选择搜索类型">
+      <option value="番号">番号</option>
+      <option value="女优">女优</option>
+      <option value="类别">类别</option>
+    </select>
+    <button type="button" id="searchBtn">搜索</button>
   </div>
 
-  <div class="section">
-    <div class="section-title">🎬 番号 / 动漫资源</div>
+  <section>
+    <h2>📚 资源库（番号资料 & 资源站）</h2>
     <ul>
-      <li><a href="https://www.javbus.com" target="_blank">JavBus</a> - 番号、封面、磁力</li>
-      <li><a href="https://www.javlibrary.com/cn/" target="_blank">JavLibrary</a> - 番号资料、评论系统</li>
-      <li><a href="https://javdb.com" target="_blank">JavDB</a> - 极简番号索引</li>
-      <li><a href="https://av01.tv" target="_blank">AV01.tv</a> - 清爽封面式导航</li>
-      <li><a href="https://sukebei.nyaa.si/" target="_blank">Sukebei Nyaa</a> - JAV + 动漫 BT 索引</li>
-      <li><a href="https://hanime.tv" target="_blank">HAnime.tv</a> - 二次元 H 动画站</li>
+      <li>
+        <a href="https://www.javlibrary.com/cn/" target="_blank" rel="noopener noreferrer">JavLibrary</a>
+        <p class="desc">最大的番号资料库，女优信息详尽，评论活跃，内容丰富。</p>
+      </li>
+      <li>
+        <a href="https://www.javbus.com" target="_blank" rel="noopener noreferrer">JavBus</a>
+        <p class="desc">番号搜索和磁力下载结合，界面友好，更新快速。</p>
+      </li>
+      <li>
+        <a href="https://javdb.com" target="_blank" rel="noopener noreferrer">JavDB</a>
+        <p class="desc">极简设计，专注番号数据，快速轻量。</p>
+      </li>
+      <li>
+        <a href="https://av01.tv" target="_blank" rel="noopener noreferrer">AV01.tv</a>
+        <p class="desc">封面丰富，适合快速浏览和筛选番号资源。</p>
+      </li>
+      <li>
+        <a href="https://sukebei.nyaa.si/" target="_blank" rel="noopener noreferrer">Sukebei Nyaa</a>
+        <p class="desc">二次元+成人BT资源索引，资源种类丰富。</p>
+      </li>
+      <li>
+        <a href="https://jable.tv" target="_blank" rel="noopener noreferrer">Jable.tv</a>
+        <p class="desc">高质量在线播放平台，支持多设备观看。</p>
+      </li>
     </ul>
-  </div>
+  </section>
 
-  <div class="section">
-    <div class="section-title">🔍 综合磁力搜索</div>
+  <section>
+    <h2>💬 社区论坛（中文成人论坛）</h2>
     <ul>
-      <li><a href="https://btsow.rest/" target="_blank">BTsow（镜像）</a></li>
-      <li><a href="https://bt4g.net/" target="_blank">BT4G</a></li>
-      <li><a href="https://1337x.to/" target="_blank">1337x</a></li>
-      <li><a href="https://magnetdl.com/" target="_blank">MagnetDL</a></li>
+      <li>
+        <a href="https://t66y.com" target="_blank" rel="noopener noreferrer">草榴社区（T66y）</a>
+        <p class="desc">最大中文成人论坛，资源丰富，用户交流活跃。</p>
+      </li>
+      <li>
+        <a href="https://sehuatang.net" target="_blank" rel="noopener noreferrer">色花堂</a>
+        <p class="desc">资源多且更新快，网盘链接丰富，分类细致。</p>
+      </li>
+      <li>
+        <a href="https://91porn.com" target="_blank" rel="noopener noreferrer">91论坛</a>
+        <p class="desc">用户基数大，内容包罗万象，但广告较多，需谨慎访问。</p>
+      </li>
+      <li>
+        <a href="https://hanime.tv" target="_blank" rel="noopener noreferrer">HAnime.tv</a>
+        <p class="desc">专注二次元H动画，适合动漫爱好者。</p>
+      </li>
     </ul>
-  </div>
+  </section>
 
-  <div class="note">
-    🚀 支持点击链接访问，或直接搜索番号/关键词。建议配合 VPN + 广告拦截器使用。
-  </div>
+  <section>
+    <h2>🔍 磁力搜索引擎（BT资源聚合）</h2>
+    <ul>
+      <li>
+        <a href="https://btsow.rest/" target="_blank" rel="noopener noreferrer">BTsow</a>
+        <p class="desc">中文磁力搜索引擎，番号资源丰富，带有清晰封面。</p>
+      </li>
+      <li>
+        <a href="https://bt4g.net/" target="_blank" rel="noopener noreferrer">BT4G</a>
+        <p class="desc">界面可视化，支持多种筛选方式，资源更新频繁。</p>
+      </li>
+      <li>
+        <a href="https://torrentz2.nz/" target="_blank" rel="noopener noreferrer">Torrentz2</a>
+        <p class="desc">多站聚合搜索，覆盖面广，综合性强。</p>
+      </li>
+      <li>
+        <a href="https://1337x.to/" target="_blank" rel="noopener noreferrer">1337x</a>
+        <p class="desc">国际知名种子站，资源丰富且分类清晰。</p>
+      </li>
+      <li>
+        <a href="https://magnetdl.com/" target="_blank" rel="noopener noreferrer">MagnetDL</a>
+        <p class="desc">简洁快速的磁力搜索体验，支持成人内容。</p>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    建议使用 VPN 和广告拦截器访问，页面不托管任何资源，仅做导航用途。© 2025 磁力快搜
+  </footer>
+
+  <script>
+    function doSearch() {
+      const keyword = document.getElementById("searchInput").value.trim();
+      if (!keyword) {
+        alert("请输入搜索关键词");
+        return;
+      }
+      const type = document.getElementById("searchType").value;
+
+      let url = "";
+
+      // 按不同类型跳转不同搜索引擎（主要是番号资源站和磁力搜索）
+      if (type === "番号") {
+        // 优先JavLibrary、JavBus、JavDB搜索
+        url = `https://www.javlibrary.com/cn/vl_searchbyid.php?keyword=${encodeURIComponent(keyword)}`;
+      } else if (type === "女优") {
+        // 按女优名优先JavLibrary女优搜索
+        url = `https://www.javlibrary.com/cn/vl_star.php?keyword=${encodeURIComponent(keyword)}`;
+      } else if (type === "类别") {
+        // 按类别关键字跳到 Sukebei Nyaa 的类别搜索页
+        url = `https://sukebei.nyaa.si/?f=0&c=0_0&q=${encodeURIComponent(keyword)}`;
+      }
+
+      window.open(url, "_blank");
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", doSearch);
+    document.getElementById("searchInput").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        doSearch();
+      }
+    });
+  </script>
 </body>
 </html>
