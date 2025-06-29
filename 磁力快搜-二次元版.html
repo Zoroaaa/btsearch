@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>磁力快搜 · 二次元版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+    body {
+      background: linear-gradient(to bottom, #2c2c54, #40407a);
+      color: #f9f9f9;
+      font-family: 'ZCOOL KuaiLe', cursive;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #ff9ff3;
+      font-size: 2.2em;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px #000;
+    }
+    .search-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .search-box input {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
+    .section {
+      margin-top: 25px;
+    }
+    .section-title {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      color: #ffdd59;
+      text-shadow: 1px 1px 2px #000;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    a {
+      color: #00d2d3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .note {
+      font-size: 0.9em;
+      color: #ccc;
+      margin-top: 30px;
+      text-align: center;
+    }
+  </style>
+  <script>
+    function searchKeyword() {
+      const keyword = document.getElementById("searchInput").value.trim();
+      if (!keyword) return;
+      const url = "https://sukebei.nyaa.si/?f=0&c=0_0&q=" + encodeURIComponent(keyword);
+      window.open(url, "_blank");
+    }
+  </script>
+</head>
+<body>
+  <h1>磁力快搜 · 二次元版</h1>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="输入番号 / 关键词，回车即搜 Sukebei Nyaa" onkeydown="if(event.key==='Enter') searchKeyword()">
+  </div>
+
+  <div class="section">
+    <div class="section-title">🎬 番号 / 动漫资源</div>
+    <ul>
+      <li><a href="https://www.javbus.com" target="_blank">JavBus</a> - 番号、封面、磁力</li>
+      <li><a href="https://www.javlibrary.com/cn/" target="_blank">JavLibrary</a> - 番号资料、评论系统</li>
+      <li><a href="https://javdb.com" target="_blank">JavDB</a> - 极简番号索引</li>
+      <li><a href="https://av01.tv" target="_blank">AV01.tv</a> - 清爽封面式导航</li>
+      <li><a href="https://sukebei.nyaa.si/" target="_blank">Sukebei Nyaa</a> - JAV + 动漫 BT 索引</li>
+      <li><a href="https://hanime.tv" target="_blank">HAnime.tv</a> - 二次元 H 动画站</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🔍 综合磁力搜索</div>
+    <ul>
+      <li><a href="https://btsow.rest/" target="_blank">BTsow（镜像）</a></li>
+      <li><a href="https://bt4g.net/" target="_blank">BT4G</a></li>
+      <li><a href="https://1337x.to/" target="_blank">1337x</a></li>
+      <li><a href="https://magnetdl.com/" target="_blank">MagnetDL</a></li>
+    </ul>
+  </div>
+
+  <div class="note">
+    🚀 支持点击链接访问，或直接搜索番号/关键词。建议配合 VPN + 广告拦截器使用。
+  </div>
+</body>
+</html>
