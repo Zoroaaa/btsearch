@@ -1,315 +1,198 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>磁力快搜 · 简洁现代版（多维搜索）</title>
+  <title>磁力快搜 · 多源番号资料搜索</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #f4f7fc;
+      --text: #1a1a1a;
+      --card: #ffffff;
+      --primary: #1e88e5;
+      --secondary: #1565c0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --text: #f1f1f1;
+        --card: #1e1e1e;
+        --primary: #90caf9;
+        --secondary: #42a5f5;
+      }
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background: #f4f7fc;
-      color: #1a1a1a;
-      line-height: 1.6;
+      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text);
       padding: 20px;
       max-width: 900px;
-      margin: 0 auto;
+      margin: auto;
     }
 
     h1 {
       text-align: center;
-      color: #1e88e5;
+      color: var(--primary);
       margin-bottom: 25px;
-      font-weight: 700;
-      font-size: 2.4rem;
-      letter-spacing: 1px;
     }
 
-    /* 搜索区域 */
     .search-area {
-      background: #ffffff;
-      padding: 20px 25px;
+      background: var(--card);
+      padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
-      margin-bottom: 40px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
+      gap: 10px;
       justify-content: center;
-      align-items: center;
     }
 
-    .search-area input[type="text"] {
-      flex: 1 1 320px;
-      padding: 10px 14px;
+    .search-area input {
+      flex: 1;
+      padding: 10px;
       font-size: 1rem;
-      border: 1.5px solid #1e88e5;
+      border: 1px solid var(--primary);
       border-radius: 6px;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
-    .search-area input[type="text"]:focus {
-      border-color: #1565c0;
-      box-shadow: 0 0 8px #1565c0;
-    }
-
-    .search-area select {
-      padding: 10px 14px;
-      font-size: 1rem;
-      border: 1.5px solid #1e88e5;
-      border-radius: 6px;
-      background: white;
-      color: #1a1a1a;
-      cursor: pointer;
-      transition: border-color 0.3s ease;
-    }
-    .search-area select:hover,
-    .search-area select:focus {
-      border-color: #1565c0;
-      box-shadow: 0 0 8px #1565c0;
-      outline: none;
+      background: transparent;
+      color: var(--text);
     }
 
     .search-area button {
-      padding: 10px 24px;
+      padding: 10px 20px;
       font-size: 1rem;
-      background-color: #1e88e5;
+      background: var(--primary);
+      color: white;
       border: none;
       border-radius: 6px;
-      color: white;
       cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
-    .search-area button:hover {
-      background-color: #1565c0;
     }
 
-    /* 分类区域样式 */
+    .history {
+      font-size: 0.9rem;
+      margin: 10px 0 30px;
+    }
+
+    .history span {
+      background: var(--primary);
+      color: white;
+      padding: 4px 10px;
+      margin: 4px;
+      border-radius: 5px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
     section {
-      margin-bottom: 40px;
-      background: #ffffff;
+      background: var(--card);
+      padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
-      padding: 20px 25px;
-      transition: box-shadow 0.3s ease;
-    }
-    section:hover {
-      box-shadow: 0 6px 20px rgb(0 0 0 / 0.15);
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
 
-    section > h2 {
-      color: #1565c0;
-      font-size: 1.6rem;
-      margin-bottom: 18px;
-      border-left: 5px solid #1e88e5;
-      padding-left: 12px;
-      font-weight: 600;
+    section h2 {
+      color: var(--secondary);
+      border-left: 5px solid var(--primary);
+      padding-left: 10px;
     }
 
-    ul {
-      list-style-type: none;
-    }
-
-    li {
-      margin-bottom: 14px;
-      font-size: 1rem;
-    }
+    ul { list-style: none; padding-left: 0; }
+    li { margin: 12px 0; }
 
     a {
+      color: var(--primary);
       text-decoration: none;
-      color: #1976d2;
-      font-weight: 600;
-      transition: color 0.2s ease;
+      font-weight: bold;
     }
+
     a:hover {
-      color: #004ba0;
       text-decoration: underline;
     }
 
     p.desc {
-      color: #555;
-      font-weight: 400;
-      margin-top: 4px;
       font-size: 0.9rem;
-      max-width: 700px;
-      line-height: 1.4;
+      color: #888;
     }
 
     footer {
       text-align: center;
-      font-size: 0.85rem;
-      color: #999;
-      margin-top: 40px;
-      user-select: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      body {
-        padding: 15px;
-      }
-      section {
-        padding: 15px 20px;
-      }
-      h1 {
-        font-size: 2rem;
-      }
-      section > h2 {
-        font-size: 1.4rem;
-      }
-      .search-area {
-        flex-direction: column;
-        gap: 10px;
-      }
-      .search-area input[type="text"],
-      .search-area select,
-      .search-area button {
-        width: 100%;
-        flex: none;
-      }
+      color: #aaa;
+      font-size: 0.8rem;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-  <h1>磁力快搜 · 简洁现代版（多维搜索）</h1>
+  <h1>磁力快搜 · 多源番号资料搜索</h1>
 
-  <div class="search-area" role="search">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="请输入番号、女优名或类别关键词"
-      aria-label="搜索关键词"
-    />
-    <select id="searchType" aria-label="选择搜索类型">
-      <option value="番号">番号</option>
-      <option value="女优">女优</option>
-      <option value="类别">类别</option>
-    </select>
-    <button type="button" id="searchBtn">搜索</button>
+  <div class="search-area">
+    <input type="text" id="searchInput" placeholder="输入番号、女优、关键词" />
+    <button onclick="doSearch()">多源搜索</button>
+  </div>
+
+  <div class="history">
+    <strong>历史记录：</strong><div id="historyItems"></div>
   </div>
 
   <section>
-    <h2>📚 资源库（番号资料 & 资源站）</h2>
+    <h2>📚 番号资源站</h2>
     <ul>
-      <li>
-        <a href="https://www.javlibrary.com/cn/" target="_blank" rel="noopener noreferrer">JavLibrary</a>
-        <p class="desc">最大的番号资料库，女优信息详尽，评论活跃，内容丰富。</p>
-      </li>
-      <li>
-        <a href="https://www.javbus.com" target="_blank" rel="noopener noreferrer">JavBus</a>
-        <p class="desc">番号搜索和磁力下载结合，界面友好，更新快速。</p>
-      </li>
-      <li>
-        <a href="https://javdb.com" target="_blank" rel="noopener noreferrer">JavDB</a>
-        <p class="desc">极简设计，专注番号数据，快速轻量。</p>
-      </li>
-      <li>
-        <a href="https://av01.tv" target="_blank" rel="noopener noreferrer">AV01.tv</a>
-        <p class="desc">封面丰富，适合快速浏览和筛选番号资源。</p>
-      </li>
-      <li>
-        <a href="https://sukebei.nyaa.si/" target="_blank" rel="noopener noreferrer">Sukebei Nyaa</a>
-        <p class="desc">二次元+成人BT资源索引，资源种类丰富。</p>
-      </li>
-      <li>
-        <a href="https://jable.tv" target="_blank" rel="noopener noreferrer">Jable.tv</a>
-        <p class="desc">高质量在线播放平台，支持多设备观看。</p>
-      </li>
+      <li><a href="https://www.javbus.com" target="_blank">JavBus</a> <p class="desc">番号+磁力一体站，信息完善。</p></li>
+      <li><a href="https://javdb.com" target="_blank">JavDB</a> <p class="desc">极简风格番号资料站，轻量快速。</p></li>
+      <li><a href="https://av01.tv" target="_blank">AV01</a> <p class="desc">快速预览站点，封面大图清晰。</p></li>
+      <li><a href="https://jable.tv" target="_blank">Jable</a> <p class="desc">在线播放，适配多终端。</p></li>
+      <li><a href="https://missav.com" target="_blank">MissAV</a> <p class="desc">中文界面，封面高清，信息丰富。</p></li>
+      <li><a href="https://www.javlibrary.com/cn" target="_blank">JavLibrary</a> <p class="desc">评论活跃，女优搜索详尽。</p></li>
     </ul>
   </section>
 
-  <section>
-    <h2>💬 社区论坛（中文成人论坛）</h2>
-    <ul>
-      <li>
-        <a href="https://t66y.com" target="_blank" rel="noopener noreferrer">草榴社区（T66y）</a>
-        <p class="desc">最大中文成人论坛，资源丰富，用户交流活跃。</p>
-      </li>
-      <li>
-        <a href="https://sehuatang.net" target="_blank" rel="noopener noreferrer">色花堂</a>
-        <p class="desc">资源多且更新快，网盘链接丰富，分类细致。</p>
-      </li>
-      <li>
-        <a href="https://91porn.com" target="_blank" rel="noopener noreferrer">91论坛</a>
-        <p class="desc">用户基数大，内容包罗万象，但广告较多，需谨慎访问。</p>
-      </li>
-      <li>
-        <a href="https://hanime.tv" target="_blank" rel="noopener noreferrer">HAnime.tv</a>
-        <p class="desc">专注二次元H动画，适合动漫爱好者。</p>
-      </li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>🔍 磁力搜索引擎（BT资源聚合）</h2>
-    <ul>
-      <li>
-        <a href="https://btsow.rest/" target="_blank" rel="noopener noreferrer">BTsow</a>
-        <p class="desc">中文磁力搜索引擎，番号资源丰富，带有清晰封面。</p>
-      </li>
-      <li>
-        <a href="https://bt4g.net/" target="_blank" rel="noopener noreferrer">BT4G</a>
-        <p class="desc">界面可视化，支持多种筛选方式，资源更新频繁。</p>
-      </li>
-      <li>
-        <a href="https://torrentz2.nz/" target="_blank" rel="noopener noreferrer">Torrentz2</a>
-        <p class="desc">多站聚合搜索，覆盖面广，综合性强。</p>
-      </li>
-      <li>
-        <a href="https://1337x.to/" target="_blank" rel="noopener noreferrer">1337x</a>
-        <p class="desc">国际知名种子站，资源丰富且分类清晰。</p>
-      </li>
-      <li>
-        <a href="https://magnetdl.com/" target="_blank" rel="noopener noreferrer">MagnetDL</a>
-        <p class="desc">简洁快速的磁力搜索体验，支持成人内容。</p>
-      </li>
-    </ul>
-  </section>
-
-  <footer>
-    建议使用 VPN 和广告拦截器访问，页面不托管任何资源，仅做导航用途。© 2025 磁力快搜
-  </footer>
+  <footer>本页仅为资源站导航，建议使用VPN访问 · © 2025 磁力快搜</footer>
 
   <script>
+    const searchSites = [
+      { name: "JavBus", url: "https://www.javbus.com/search/" },
+      { name: "JavDB", url: "https://javdb.com/search?q=" },
+      { name: "AV01", url: "https://av01.tv/search/" },
+      { name: "Jable", url: "https://jable.tv/search/" },
+      { name: "MissAV", url: "https://missav.com/search/" },
+      { name: "JavLibrary", url: "https://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" }
+    ];
+
     function doSearch() {
       const keyword = document.getElementById("searchInput").value.trim();
-      if (!keyword) {
-        alert("请输入搜索关键词");
-        return;
-      }
-      const type = document.getElementById("searchType").value;
+      if (!keyword) return alert("请输入关键词");
 
-      let url = "";
-
-      // 按不同类型跳转不同搜索引擎（主要是番号资源站和磁力搜索）
-      if (type === "番号") {
-        // 优先JavLibrary、JavBus、JavDB搜索
-        url = `https://www.javlibrary.com/cn/vl_searchbyid.php?keyword=${encodeURIComponent(keyword)}`;
-      } else if (type === "女优") {
-        // 按女优名优先JavLibrary女优搜索
-        url = `https://www.javlibrary.com/cn/vl_star.php?keyword=${encodeURIComponent(keyword)}`;
-      } else if (type === "类别") {
-        // 按类别关键字跳到 Sukebei Nyaa 的类别搜索页
-        url = `https://sukebei.nyaa.si/?f=0&c=0_0&q=${encodeURIComponent(keyword)}`;
+      // 添加历史记录
+      let history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+      if (!history.includes(keyword)) {
+        history.unshift(keyword);
+        if (history.length > 10) history.pop();
+        localStorage.setItem("searchHistory", JSON.stringify(history));
+        renderHistory();
       }
 
-      window.open(url, "_blank");
+      // 多源打开
+      for (const site of searchSites) {
+        window.open(site.url + encodeURIComponent(keyword), "_blank");
+      }
     }
 
-    document.getElementById("searchBtn").addEventListener("click", doSearch);
-    document.getElementById("searchInput").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        doSearch();
-      }
-    });
+    function renderHistory() {
+      const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+      const box = document.getElementById("historyItems");
+      box.innerHTML = history.map(h => `<span onclick="searchAgain('${h}')">${h}</span>`).join('');
+    }
+
+    function searchAgain(keyword) {
+      document.getElementById("searchInput").value = keyword;
+      doSearch();
+    }
+
+    renderHistory();
   </script>
 </body>
 </html>
