@@ -2,6 +2,74 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
+
+  <title>磁力快搜 · 启动验证</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    #unlockOverlay {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      flex-direction: column;
+    }
+    #unlockOverlay input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 10px;
+    }
+    #unlockOverlay button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background: #2196f3;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    #mainContent { display: none; }
+  </style>
+</head>
+<body>
+  <div id="unlockOverlay">
+    <h2>请输入访问代号以进入页面</h2>
+    <input type="password" id="accessCode" placeholder="请输入代号">
+    <button onclick="checkAccessCode()">解锁</button>
+    <p id="error" style="color:red; margin-top: 10px;"></p>
+  </div>
+
+  <div id="mainContent">
+
+<script>
+function checkAccessCode() {
+  const input = document.getElementById('accessCode').value.trim();
+  const error = document.getElementById('error');
+  if (input === '9989') {
+    document.getElementById('unlockOverlay').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  } else {
+    error.textContent = '访问代号错误，请重试。';
+  }
+}
+</script>
+
+    
   <title>磁力快搜 · 最终增强版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
@@ -333,7 +401,7 @@
   <h2>💬 中文社区/论坛</h2>
   <ul>
     <li><a href="https://sehuatang.net" target="_blank">色花堂</a><p class="desc">网盘资源丰富，需注册登陆。</p></li>
-    <li><a href="https://t66y.com" target="_blank">草椰社区</a><p class="desc">老牌论坛，需代理访问，资源充足。</p></li>
+    <li><a href="https://t66y.com" target="_blank">草榴社区</a><p class="desc">老牌论坛，需代理访问，资源充足。</p></li>
     <li><a href="https://91porn.com/index.php" target="_blank">91论坛</a><p class="desc">播放、分享、评论一体，热度高。</p></li>
     <li><a href="https://www.pornleech.me/" target="_blank">PornLeech</a><p class="desc">国际成人社区网站，同时有演员评分和评论功能。</p></li>
   </ul>
