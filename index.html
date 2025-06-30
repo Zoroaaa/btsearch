@@ -76,6 +76,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       color: var(--text-color-light);
       transition: background-color 0.3s, color 0.3s;
+      position: relative;
     }
     .result img {
       max-width: 100%;
@@ -87,11 +88,21 @@
       color: var(--link-color-light);
       font-weight: bold;
     }
-    .favorite {
-      margin-top: 5px;
+    .favorite-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #ff4081;
+      border: none;
+      color: white;
       font-size: 12px;
-      color: var(--link-color-light);
+      padding: 3px 8px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .favorite-btn:hover {
+      background: #e91e63;
     }
     .favorites-section {
       background: #fff;
@@ -100,9 +111,35 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       color: var(--text-color-light);
       transition: background-color 0.3s, color 0.3s;
+      max-width: 600px;
+      margin: 30px auto;
     }
     .favorite-item {
       margin-bottom: 10px;
+      position: relative;
+      padding-right: 20px;
+      cursor: pointer;
+      color: var(--link-color-light);
+      user-select: none;
+    }
+    .favorite-item:hover {
+      text-decoration: underline;
+    }
+    .favorite-item .remove-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-weight: bold;
+      color: #e74c3c;
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+      line-height: 18px;
+      padding: 0 5px;
+      transition: color 0.3s;
+    }
+    .favorite-item .remove-btn:hover {
+      color: #c0392b;
     }
     ul { list-style: none; padding-left: 0; }
     li { margin: 12px 0; }
@@ -328,6 +365,10 @@
   const searchInput = document.getElementById('searchInput');
   const searchHistoryList = document.getElementById('searchHistoryList');
   const historySection = document.querySelector('.history-section');
+  const resultsContainer = document.getElementById('results');
+  const searchInfo = document.getElementById('searchInfo');
+  const clearResultsBtn = document.getElementById('clearResultsBtn');
+  const favoritesContainer = document.getElementById('favorites');
 
   // 搜索历史管理
   function getSearchHistory() {
@@ -339,10 +380,9 @@
   function addSearchHistory(keyword) {
     if(!keyword) return;
     let history = getSearchHistory();
-    // 去重并最新在前
     history = history.filter(item => item !== keyword);
     history.unshift(keyword);
-    if(history.length > 20) history.pop(); // 最多20条
+    if(history.length > 20) history.pop();
     saveSearchHistory(history);
     renderSearchHistory();
   }
@@ -367,6 +407,63 @@
     searchVideos();
   }
 
+  // 收藏夹管理
+  function getFavorites() {
+    return JSON.parse(localStorage.getItem('favorites') || '[]');
+  }
+  function saveFavorites(favs) {
+    localStorage.setItem('favorites', JSON.stringify(favs));
+  }
+  // 渲染收藏夹
+  function renderFavorites() {
+    const favs = getFavorites();
+    if(favs.length === 0) {
+      favoritesContainer.innerHTML = '暂无收藏';
+      return;
+    }
+    favoritesContainer.innerHTML = favs.map((fav, idx) => 
+      `<div class="favorite-item" data-index="${idx}">
+        <span class="fav-link" style="color:#2c7be5;cursor:pointer;">${fav.name}</span>
+        <span class="remove-btn" title="删除收藏">&times;</span>
+      </div>`).join('');
+    // 绑定点击事件
+    Array.from(favoritesContainer.querySelectorAll('.fav-link')).forEach((el, i) => {
+      el.onclick = () => {
+        openLink(getFavorites()[i]);
+      };
+    });
+    Array.from(favoritesContainer.querySelectorAll('.remove-btn')).forEach((el, i) => {
+      el.onclick = (e) => {
+        e.stopPropagation();
+        removeFavorite(i);
+      };
+    });
+  }
+  function addFavorite(fav) {
+    let favs = getFavorites();
+    // 避免重复（同name和url）
+    if(!favs.some(f => f.name === fav.name && f.url === fav.url)) {
+      favs.push(fav);
+      saveFavorites(favs);
+      renderFavorites();
+      alert('已加入收藏夹！');
+    } else {
+      alert('该项目已在收藏夹中！');
+    }
+  }
+  function removeFavorite(index) {
+    let favs = getFavorites();
+    if(index >= 0 && index < favs.length) {
+      favs.splice(index, 1);
+      saveFavorites(favs);
+      renderFavorites();
+    }
+  }
+  // 点击收藏夹打开链接
+  function openLink(fav) {
+    window.open(fav.url, '_blank');
+  }
+
   // 搜索功能
   function searchVideos() {
     const keyword = searchInput.value.trim();
@@ -376,63 +473,19 @@
     }
     addSearchHistory(keyword);
 
-    const javbusUrl = `https://www.javbus.com/search/${encodeURIComponent(keyword)}`;
-    const javdbUrl = `https://javdb.com/search?q=${encodeURIComponent(keyword)}&f=all`;
-    const javlibraryUrl = `https://www.javlibrary.com/cn/vl_searchbyid.php?keyword=${encodeURIComponent(keyword)}`;
-
-    const results = document.getElementById('results');
-    const searchInfo = document.getElementById('searchInfo');
-    const clearBtn = document.getElementById('clearResultsBtn');
+    const sources = [
+      { name: 'JavBus', url: `https://www.javbus.com/search/${encodeURIComponent(keyword)}`, icon: 'JavBus' },
+      { name: 'JavDB', url: `https://javdb.com/search?q=${encodeURIComponent(keyword)}&f=all`, icon: 'JavDB' },
+      { name: 'JavLibrary', url: `https://www.javlibrary.com/cn/vl_searchbyid.php?keyword=${encodeURIComponent(keyword)}`, icon: 'JavLibrary' }
+    ];
 
     searchInfo.textContent = `搜索关键词：${keyword}`;
-    clearBtn.style.display = 'inline-block';
+    clearResultsBtn.style.display = 'inline-block';
 
-    results.innerHTML = `
+    resultsContainer.innerHTML = sources.map(src => `
       <div class="result">
-        <a href="${javbusUrl}" target="_blank" rel="noopener noreferrer">
-          <img src="https://via.placeholder.com/150x210.png?text=JavBus" alt="JavBus" />
-          <div class="result-title">点击查看 JavBus 结果</div>
+        <a href="${src.url}" target="_blank" rel="noopener noreferrer">
+          <img src="https://via.placeholder.com/150x210.png?text=${src.icon}" alt="${src.name}" />
+          <div class="result-title">点击查看 ${src.name} 结果</div>
         </a>
-      </div>
-      <div class="result">
-        <a href="${javdbUrl}" target="_blank" rel="noopener noreferrer">
-          <img src="https://via.placeholder.com/150x210.png?text=JavDB" alt="JavDB" />
-          <div class="result-title">点击查看 JavDB 结果</div>
-        </a>
-      </div>
-      <div class="result">
-        <a href="${javlibraryUrl}" target="_blank" rel="noopener noreferrer">
-          <img src="https://via.placeholder.com/150x210.png?text=JavLibrary" alt="JavLibrary" />
-          <div class="result-title">点击查看 JavLibrary 结果</div>
-        </a>
-      </div>`;
-  }
-
-  function clearResults() {
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('searchInfo').textContent = '';
-    document.getElementById('clearResultsBtn').style.display = 'none';
-  }
-
-  // 收藏夹相关（之前功能保持）
-  function loadFavorites() {
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    const box = document.getElementById('favorites');
-    if (favorites.length === 0) {
-      box.innerHTML = '暂无收藏';
-    } else {
-      box.innerHTML = favorites.map(f => `<div class='favorite-item'>${f}</div>`).join('');
-    }
-  }
-  function clearFavorites() {
-    if(confirm('确定清空收藏夹吗？')) {
-      localStorage.removeItem('favorites');
-      loadFavorites();
-    }
-  }
-
-  renderSearchHistory();
-  loadFavorites();
-</script>
-</body>
-</html>
+        <button class="favorite-btn" title="加入收藏" onclick="event.stopPropagation(); addFavorite({
