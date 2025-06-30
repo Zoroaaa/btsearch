@@ -87,6 +87,7 @@
       font-size: 14px;
       color: var(--link-color-light);
       font-weight: bold;
+      margin-bottom: 5px;
     }
     .favorite-btn {
       position: absolute;
@@ -117,10 +118,11 @@
     .favorite-item {
       margin-bottom: 10px;
       position: relative;
-      padding-right: 20px;
+      padding-right: 22px;
       cursor: pointer;
       color: var(--link-color-light);
       user-select: none;
+      word-break: break-all;
     }
     .favorite-item:hover {
       text-decoration: underline;
@@ -135,7 +137,7 @@
       user-select: none;
       font-size: 18px;
       line-height: 18px;
-      padding: 0 5px;
+      padding: 0 6px;
       transition: color 0.3s;
     }
     .favorite-item .remove-btn:hover {
@@ -488,4 +490,20 @@
           <img src="https://via.placeholder.com/150x210.png?text=${src.icon}" alt="${src.name}" />
           <div class="result-title">点击查看 ${src.name} 结果</div>
         </a>
-        <button class="favorite-btn" title="加入收藏" onclick="event.stopPropagation(); addFavorite({
+        <button class="favorite-btn" title="加入收藏" onclick="event.stopPropagation(); addFavorite({name: '${src.name} - ${keyword}', url: '${src.url}'})">收藏</button>
+      </div>
+    `).join('');
+  }
+
+  function clearResults() {
+    resultsContainer.innerHTML = '';
+    searchInfo.textContent = '';
+    clearResultsBtn.style.display = 'none';
+  }
+
+  // 收藏夹与历史初始化
+  renderSearchHistory();
+  renderFavorites();
+</script>
+</body>
+</html>
