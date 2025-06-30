@@ -1,1 +1,1 @@
-bt.zoroaaa.dpdns.org
+https://bt.zoroaaa.dpdns.org/
