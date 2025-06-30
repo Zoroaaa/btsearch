@@ -1,1 +1,1 @@
-https://zoroaaa.github.io/btsearch/
+bt.zoroaaa.dpdns.org
